@@ -1,9 +1,7 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['pdf-parse', 'mammoth'],
-  },
+  serverExternalPackages: ['pdf-parse', 'mammoth'],
   webpack: (config) => {
     config.resolve.alias.canvas = false
     return config

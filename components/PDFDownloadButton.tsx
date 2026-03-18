@@ -31,7 +31,7 @@ function buildResumeHTML(data: ResumeData): string {
       : null,
   ]
     .filter(Boolean)
-    .map(escapeHtml)
+    .map((s) => escapeHtml(s as string))
     .join(' &thinsp;·&thinsp; ')
 
   const skillsHTML = data.skills
