@@ -93,7 +93,6 @@ If experience is lean: use 11pt + compact:false.`
   const response = await anthropic.messages.create({
     model: MODEL,
     max_tokens: 4000,
-    thinking: { type: 'adaptive' },
     messages: [
       { role: 'user', content: `${systemPrompt}\n\n${userPrompt}` },
     ],
