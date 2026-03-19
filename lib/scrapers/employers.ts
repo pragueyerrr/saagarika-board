@@ -1,13 +1,13 @@
 import * as cheerio from 'cheerio'
 import type { Job, JobSource } from '@/types'
 
-// Direct employer career pages - Dubai tech and enterprise companies with PM roles
+// Direct employer career pages - Dubai marketing, media, and brand companies
 const EMPLOYER_SITES = [
-  // Fintech
+  // Advertising agencies
   {
-    name: 'Tabby',
-    url: 'https://tabby.ai/careers',
-    source: 'tabby',
+    name: 'Publicis Groupe',
+    url: 'https://www.publicisgroupe.com/en/careers',
+    source: 'publicis',
     selectors: {
       item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, .title, [class*="title"]',
@@ -15,59 +15,57 @@ const EMPLOYER_SITES = [
     },
   },
   {
-    name: 'Tamara',
-    url: 'https://tamara.co/careers',
-    source: 'tamara',
+    name: 'Havas Middle East',
+    url: 'https://www.havas.com/careers/',
+    source: 'havas_me',
     selectors: {
-      item: '.job, .career, .position, article, .vacancy, [class*="job"]',
+      item: '.job, .career, .position, article, [class*="job"]',
+      title: 'h2, h3, h4, a, .title, [class*="title"]',
+      link: 'a',
+    },
+  },
+  // Retail / brand with large marketing teams
+  {
+    name: 'Chalhoub Group',
+    url: 'https://www.chalhoubgroup.com/careers',
+    source: 'chalhoub',
+    selectors: {
+      item: '.job, .career, .position, article, [class*="job"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
       link: 'a',
     },
   },
   {
-    name: 'Ziina',
-    url: 'https://ziina.com/careers',
-    source: 'ziina',
+    name: 'Majid Al Futtaim',
+    url: 'https://www.majidalfuttaim.com/en/careers',
+    source: 'maf',
     selectors: {
-      item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
+      item: '.job, .career, .vacancy, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
       link: 'a',
     },
   },
-  // Telecoms
+  // Hospitality (large marketing depts)
   {
-    name: 'du Telecom',
-    url: 'https://www.du.ae/careers',
-    source: 'du_telecom',
+    name: 'Jumeirah Group',
+    url: 'https://www.jumeirah.com/en/jumeirah-group/careers',
+    source: 'jumeirah',
     selectors: {
-      item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  // Government / smart city
-  {
-    name: 'Smart Dubai',
-    url: 'https://www.smartdubai.ae/careers',
-    source: 'smart_dubai',
-    selectors: {
-      item: '.job, .career, .vacancy, article, [class*="job"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
+      item: '.job-listing, .career-item, article, .position, [class*="job"]',
+      title: 'h2, h3, h4, .title, [class*="title"]',
       link: 'a',
     },
   },
 ]
 
 const PM_KEYWORDS = [
-  'product manager', 'product owner', 'scrum master', 'agile',
-  'business analyst', 'product analyst', 'product strategy',
-  'product operations', 'product ops', 'program manager',
-  'project manager', 'delivery manager', 'portfolio manager',
-  'growth manager', 'growth product', 'technical product',
-  'platform product', 'data product', 'ux researcher',
-  'user researcher', 'ux strategist', 'product lead',
-  'head of product', 'vp product', 'chief product',
-  'director of product', 'roadmap', 'sprint', 'backlog',
+  'social media', 'performance marketing', 'digital marketing',
+  'paid social', 'paid media', 'ppc', 'sem', 'seo',
+  'content marketing', 'brand manager', 'marketing manager',
+  'marketing coordinator', 'marketing assistant', 'marketing strategist',
+  'growth marketing', 'crm', 'email marketing', 'media planner',
+  'campaign manager', 'community manager', 'influencer',
+  'e-commerce marketing', 'marketing director', 'head of marketing',
 ]
 
 function isCreativeRole(title: string): boolean {

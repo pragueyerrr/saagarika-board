@@ -2,37 +2,37 @@ import { XMLParser } from 'fast-xml-parser'
 import type { Job, JobSource } from '@/types'
 
 const INDEED_RSS_QUERIES = [
-  // Core PM
-  { q: 'product+manager', label: 'Product Manager' },
-  { q: 'senior+product+manager', label: 'Senior Product Manager' },
-  { q: 'lead+product+manager', label: 'Lead Product Manager' },
-  { q: 'head+of+product', label: 'Head of Product' },
-  { q: 'director+of+product', label: 'Director of Product' },
-  { q: 'VP+product', label: 'VP of Product' },
-  // Adjacent PM
-  { q: 'product+owner', label: 'Product Owner' },
-  { q: 'scrum+master', label: 'Scrum Master' },
-  { q: 'agile+coach', label: 'Agile Coach' },
-  { q: 'agile+project+manager', label: 'Agile Project Manager' },
-  // Business & analysis
-  { q: 'business+analyst', label: 'Business Analyst' },
-  { q: 'product+analyst', label: 'Product Analyst' },
-  { q: 'product+strategy', label: 'Product Strategy' },
-  { q: 'product+operations', label: 'Product Operations' },
-  // Technical PM
-  { q: 'technical+product+manager', label: 'Technical Product Manager' },
-  { q: 'platform+product+manager', label: 'Platform Product Manager' },
-  { q: 'growth+product+manager', label: 'Growth PM' },
-  // Program & project
-  { q: 'program+manager', label: 'Program Manager' },
-  { q: 'project+manager', label: 'Project Manager' },
-  { q: 'delivery+manager', label: 'Delivery Manager' },
-  // Data & growth
-  { q: 'data+product+manager', label: 'Data Product Manager' },
-  { q: 'growth+manager', label: 'Growth Manager' },
-  // UX adjacent
-  { q: 'UX+researcher', label: 'UX Researcher' },
-  { q: 'user+researcher', label: 'User Researcher' },
+  // Core social media
+  { q: 'social+media+manager', label: 'Social Media Manager' },
+  { q: 'social+media+strategist', label: 'Social Media Strategist' },
+  { q: 'social+media+coordinator', label: 'Social Media Coordinator' },
+  { q: 'social+media+assistant', label: 'Social Media Assistant' },
+  { q: 'social+media+specialist', label: 'Social Media Specialist' },
+  { q: 'head+of+social+media', label: 'Head of Social Media' },
+  // Performance marketing
+  { q: 'performance+marketing+manager', label: 'Performance Marketing Manager' },
+  { q: 'performance+marketing+specialist', label: 'Performance Marketing Specialist' },
+  { q: 'paid+social+manager', label: 'Paid Social Manager' },
+  { q: 'paid+media+manager', label: 'Paid Media Manager' },
+  { q: 'PPC+manager', label: 'PPC Manager' },
+  // Digital marketing
+  { q: 'digital+marketing+manager', label: 'Digital Marketing Manager' },
+  { q: 'digital+marketing+specialist', label: 'Digital Marketing Specialist' },
+  { q: 'growth+marketing+manager', label: 'Growth Marketing Manager' },
+  // Content & brand
+  { q: 'content+marketing+manager', label: 'Content Marketing Manager' },
+  { q: 'content+strategist', label: 'Content Strategist' },
+  { q: 'brand+manager', label: 'Brand Manager' },
+  // General marketing
+  { q: 'marketing+manager', label: 'Marketing Manager' },
+  { q: 'marketing+coordinator', label: 'Marketing Coordinator' },
+  { q: 'marketing+assistant', label: 'Marketing Assistant' },
+  // Reach roles
+  { q: 'head+of+marketing', label: 'Head of Marketing' },
+  { q: 'marketing+director', label: 'Marketing Director' },
+  { q: 'CRM+manager', label: 'CRM Manager' },
+  { q: 'email+marketing+manager', label: 'Email Marketing Manager' },
+  { q: 'media+planner', label: 'Media Planner' },
 ]
 
 interface RSSItem {

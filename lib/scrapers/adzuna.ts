@@ -3,41 +3,42 @@ import type { Job, JobSource } from '@/types'
 const ADZUNA_BASE = 'https://api.adzuna.com/v1/api/jobs/ae/search'
 
 const CREATIVE_CATEGORIES = [
-  // Core PM roles
-  'product manager',
-  'senior product manager',
-  'lead product manager',
-  'head of product',
-  'VP of product',
-  'chief product officer',
-  'director of product',
-  // Adjacent PM
-  'product owner',
-  'scrum master',
-  'agile coach',
-  'agile project manager',
-  // Business & strategy
-  'business analyst',
-  'product analyst',
-  'product strategy',
-  'product operations',
-  'product ops',
-  // Technical PM
-  'technical product manager',
-  'platform product manager',
-  'growth product manager',
-  // Program & project
-  'program manager',
-  'project manager',
-  'delivery manager',
-  'portfolio manager',
-  // Data & growth
-  'data product manager',
-  'growth manager',
-  // UX adjacent
-  'UX researcher',
-  'user researcher',
-  'UX strategist',
+  // Core social media
+  'social media manager',
+  'social media strategist',
+  'social media coordinator',
+  'social media assistant',
+  'social media specialist',
+  'head of social media',
+  // Performance marketing
+  'performance marketing manager',
+  'performance marketing specialist',
+  'paid social manager',
+  'paid media manager',
+  'PPC manager',
+  // Digital marketing
+  'digital marketing manager',
+  'digital marketing specialist',
+  'digital marketing coordinator',
+  'growth marketing manager',
+  // Content marketing
+  'content marketing manager',
+  'content strategist',
+  'content manager',
+  // Brand & strategy
+  'brand manager',
+  'marketing manager',
+  'marketing coordinator',
+  'marketing assistant',
+  'marketing strategist',
+  // Reach roles (masters-level)
+  'head of digital marketing',
+  'head of marketing',
+  'marketing director',
+  'CRM manager',
+  'email marketing manager',
+  'media planner',
+  'e-commerce marketing manager',
 ]
 
 interface AdzunaResult {

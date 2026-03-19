@@ -121,7 +121,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       {/* Welcome banner */}
       {showWelcome && (
-        <div className="card p-5 relative" style={{ borderColor: 'rgba(168,85,247,0.3)', background: 'var(--bg-card)' }}>
+        <div className="card p-5 relative" style={{ borderColor: 'rgba(234,179,8,0.3)', background: 'var(--bg-card)' }}>
           <button
             onClick={dismissWelcome}
             className="absolute top-3 right-3 text-xs px-2 py-1 rounded"
@@ -130,7 +130,7 @@ export default function DashboardPage() {
             got it ✕
           </button>
           <h2 className="font-semibold mb-3" style={{ color: 'var(--red)' }}>
-            👋 Hi babygirl! &lt;3 Welcome to your board!
+            👋 Hi Sanobar! &lt;3 Welcome to your board!
           </h2>
           <ol className="space-y-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
             <li>📄 <strong>Step 1:</strong> Go to <strong>My CV</strong> and upload your CV so the AI knows who you are</li>
@@ -151,7 +151,7 @@ export default function DashboardPage() {
             Dashboard
           </h1>
           <p className="text-slate-500 text-sm mt-1">
-            Your Dubai PM job hunt at a glance
+            Your Dubai marketing job hunt at a glance
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -292,7 +292,7 @@ export default function DashboardPage() {
             href: '/jobs',
             icon: Briefcase,
             title: 'Browse Jobs',
-            desc: 'Explore scraped Dubai PM & adjacent jobs',
+            desc: 'Explore scraped Dubai marketing jobs',
           },
           {
             href: '/applications',

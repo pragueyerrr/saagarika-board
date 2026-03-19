@@ -3,14 +3,14 @@ import type { Job, JobSource } from '@/types'
 const JSEARCH_BASE = 'https://jsearch.p.rapidapi.com/search'
 
 const CREATIVE_QUERIES = [
-  'product manager Dubai',
-  'senior product manager Dubai',
-  'head of product Dubai',
-  'product owner Dubai',
-  'business analyst Dubai',
-  'program manager Dubai',
-  'project manager Dubai',
-  'scrum master Dubai',
+  'social media manager Dubai',
+  'performance marketing manager Dubai',
+  'digital marketing manager Dubai',
+  'social media strategist Dubai',
+  'paid social manager Dubai',
+  'brand manager Dubai',
+  'marketing manager Dubai',
+  'content marketing manager Dubai',
 ]
 
 interface JSearchJob {
