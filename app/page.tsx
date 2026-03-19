@@ -130,7 +130,7 @@ export default function DashboardPage() {
             got it ✕
           </button>
           <h2 className="font-semibold mb-3" style={{ color: 'var(--red)' }}>
-            👋 Hi Sanobar! &lt;3 Welcome to your board!
+            👋 Hi babygirl! &lt;3 Welcome to your board!
           </h2>
           <ol className="space-y-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
             <li>📄 <strong>Step 1:</strong> Go to <strong>My CV</strong> and upload your CV so the AI knows who you are</li>
