@@ -11,7 +11,7 @@ export async function generateResumeData(
   const cvData = cv.parsed_data as ParsedCV | undefined
   const cvText = cv.raw_text ?? JSON.stringify(cvData ?? {})
 
-  const systemPrompt = `You are an expert resume writer specializing in creative industry roles in Dubai (advertising, design, content, media production, marketing).
+  const systemPrompt = `You are an expert resume writer specializing in product management and adjacent roles in Dubai (product manager, product owner, business analyst, scrum master, program manager, UX researcher, growth manager).
 
 Your goal: craft a HIGHLY TAILORED, one-page resume for this candidate applying to this specific job.
 
@@ -19,9 +19,9 @@ RULES:
 1. The resume MUST fit on one page — adjust bullet count, font size hint, and compact flag accordingly
 2. Prioritize skills/experiences most relevant to THIS specific job
 3. Summary must be 2-3 lines max, directly addressing the role
-4. Skills must be grouped by category, most relevant first
+4. Skills must be grouped by category, most relevant first (e.g. Product Skills, Methodologies, Tools, Data & Analytics)
 5. Each job should have 2-4 bullets maximum (compact: 2, normal: 3-4)
-6. Use strong action verbs, quantify where possible
+6. Use strong action verbs, quantify where possible (e.g. "Launched X feature used by Y users", "Reduced churn by Z%")
 7. Return ONLY valid JSON — no markdown fences, no explanation`
 
   const userPrompt = `JOB POSTING:
@@ -57,8 +57,10 @@ Return this exact JSON structure:
   "portfolio": "portfolio.com",
   "summary": "2-3 sentence professional summary tailored to this role",
   "skills": [
-    { "category": "Design & Tools", "items": ["Figma", "Adobe Creative Suite"] },
-    { "category": "Content & Media", "items": ["Video Editing", "Photography"] }
+    { "category": "Product Skills", "items": ["Product Strategy", "Roadmapping", "Stakeholder Management"] },
+    { "category": "Methodologies", "items": ["Agile", "Scrum", "Lean", "OKRs"] },
+    { "category": "Tools", "items": ["Jira", "Confluence", "Figma", "Miro"] },
+    { "category": "Data & Analytics", "items": ["SQL", "Mixpanel", "Google Analytics"] }
   ],
   "experiences": [
     {
@@ -67,8 +69,8 @@ Return this exact JSON structure:
       "location": "Dubai, UAE",
       "period": "Jan 2022 – Present",
       "bullets": [
-        "Achieved X by doing Y, resulting in Z% improvement",
-        "Led team of N creatives to deliver campaign for major brand"
+        "Launched X feature adopted by Y users, driving Z% increase in engagement",
+        "Led cross-functional team of N engineers and designers to deliver product on time"
       ],
       "relevanceScore": 90
     }
@@ -81,7 +83,7 @@ Return this exact JSON structure:
       "year": "2018"
     }
   ],
-  "certifications": ["Google Analytics", "HubSpot Content Marketing"],
+  "certifications": ["Certified Scrum Product Owner (CSPO)", "Google Project Management Certificate"],
   "fontSizePt": 10,
   "compact": false
 }
@@ -121,7 +123,7 @@ export async function generateCoverLetterStream(
     messages: [
       {
         role: 'user',
-        content: `You are an expert cover letter writer for creative professionals in Dubai.
+        content: `You are an expert cover letter writer for product management professionals in Dubai.
 
 Write a compelling, personalized cover letter for this candidate applying to this job.
 
@@ -137,13 +139,13 @@ Description: ${job.description ?? ''}
 Requirements: ${job.requirements ?? ''}
 
 GUIDELINES:
-- 3-4 paragraphs, professional yet warm tone appropriate for creative industries
-- Opening: Hook with specific enthusiasm for THIS company/role
-- Middle 1-2 paragraphs: Connect 2-3 specific achievements to the job requirements
+- 3-4 paragraphs, professional yet warm tone appropriate for product and tech roles
+- Opening: Hook with specific enthusiasm for THIS company/role — reference their product or mission
+- Middle 1-2 paragraphs: Connect 2-3 specific product achievements to the job requirements (metrics, launches, team leadership)
 - Closing: Clear call to action
 - Max 350 words
 - Do NOT use generic phrases like "I am writing to express my interest"
-- Reference Dubai's creative scene if relevant
+- Reference Dubai's tech and startup ecosystem if relevant
 - Format: Just the letter body (no date, no address headers needed)`,
       },
     ],

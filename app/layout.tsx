@@ -6,8 +6,8 @@ import Navigation from '@/components/Navigation'
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' })
 
 export const metadata: Metadata = {
-  title: "Aman's Board",
-  description: 'Job tracker & AI resume generator for creative professionals in Dubai',
+  title: "NanBan's Board",
+  description: 'Job tracker & AI resume generator for product management professionals in Dubai',
 }
 
 export default function RootLayout({

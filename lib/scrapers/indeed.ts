@@ -2,37 +2,37 @@ import { XMLParser } from 'fast-xml-parser'
 import type { Job, JobSource } from '@/types'
 
 const INDEED_RSS_QUERIES = [
-  // Leadership & strategy
-  { q: 'creative+director', label: 'Creative Director' },
-  { q: 'art+director', label: 'Art Director' },
-  { q: 'design+director', label: 'Design Director' },
-  { q: 'creative+strategist', label: 'Creative Strategist' },
-  { q: 'brand+manager', label: 'Brand Manager' },
-  // Design
-  { q: 'graphic+designer', label: 'Graphic Designer' },
-  { q: 'visual+designer', label: 'Visual Designer' },
-  { q: 'UX+UI+designer', label: 'UX/UI Designer' },
-  { q: 'motion+graphics+designer', label: 'Motion Graphics' },
-  { q: 'animator', label: 'Animator' },
-  { q: 'illustrator', label: 'Illustrator' },
-  { q: '3D+designer', label: '3D Designer' },
-  { q: 'web+designer', label: 'Web Designer' },
-  // Content & copy
-  { q: 'content+creator', label: 'Content Creator' },
-  { q: 'content+writer', label: 'Content Writer' },
-  { q: 'copywriter', label: 'Copywriter' },
-  { q: 'scriptwriter', label: 'Scriptwriter' },
-  // Video & photo
-  { q: 'video+editor', label: 'Video Editor' },
-  { q: 'videographer', label: 'Videographer' },
-  { q: 'photographer', label: 'Photographer' },
-  // Social & digital
-  { q: 'social+media+manager', label: 'Social Media Manager' },
-  { q: 'social+media+creative', label: 'Social Media Creative' },
-  { q: 'influencer+marketing', label: 'Influencer Marketing' },
-  // Production
-  { q: 'creative+producer', label: 'Creative Producer' },
-  { q: 'content+producer', label: 'Content Producer' },
+  // Core PM
+  { q: 'product+manager', label: 'Product Manager' },
+  { q: 'senior+product+manager', label: 'Senior Product Manager' },
+  { q: 'lead+product+manager', label: 'Lead Product Manager' },
+  { q: 'head+of+product', label: 'Head of Product' },
+  { q: 'director+of+product', label: 'Director of Product' },
+  { q: 'VP+product', label: 'VP of Product' },
+  // Adjacent PM
+  { q: 'product+owner', label: 'Product Owner' },
+  { q: 'scrum+master', label: 'Scrum Master' },
+  { q: 'agile+coach', label: 'Agile Coach' },
+  { q: 'agile+project+manager', label: 'Agile Project Manager' },
+  // Business & analysis
+  { q: 'business+analyst', label: 'Business Analyst' },
+  { q: 'product+analyst', label: 'Product Analyst' },
+  { q: 'product+strategy', label: 'Product Strategy' },
+  { q: 'product+operations', label: 'Product Operations' },
+  // Technical PM
+  { q: 'technical+product+manager', label: 'Technical Product Manager' },
+  { q: 'platform+product+manager', label: 'Platform Product Manager' },
+  { q: 'growth+product+manager', label: 'Growth PM' },
+  // Program & project
+  { q: 'program+manager', label: 'Program Manager' },
+  { q: 'project+manager', label: 'Project Manager' },
+  { q: 'delivery+manager', label: 'Delivery Manager' },
+  // Data & growth
+  { q: 'data+product+manager', label: 'Data Product Manager' },
+  { q: 'growth+manager', label: 'Growth Manager' },
+  // UX adjacent
+  { q: 'UX+researcher', label: 'UX Researcher' },
+  { q: 'user+researcher', label: 'User Researcher' },
 ]
 
 interface RSSItem {

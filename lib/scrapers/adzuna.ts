@@ -3,49 +3,41 @@ import type { Job, JobSource } from '@/types'
 const ADZUNA_BASE = 'https://api.adzuna.com/v1/api/jobs/ae/search'
 
 const CREATIVE_CATEGORIES = [
-  // Core creative roles
-  'creative director',
-  'art director',
-  'design director',
-  'creative lead',
-  'creative manager',
-  // Design
-  'graphic designer',
-  'brand designer',
-  'visual designer',
-  'digital designer',
-  'web designer',
-  'UI designer',
-  'UX designer',
-  'product designer',
-  'motion graphics',
-  'animator',
-  'illustrator',
-  '3D designer',
-  // Content & copy
-  'content creator',
-  'content writer',
-  'copywriter',
-  'creative writer',
-  'scriptwriter',
-  // Video & photo
-  'video editor',
-  'videographer',
-  'photographer',
-  'cinematographer',
-  'creative producer',
-  // Social & digital marketing
-  'social media manager',
-  'social media creative',
-  'influencer marketing',
-  'digital marketing creative',
-  // Strategy & brand
-  'brand manager',
-  'creative strategist',
-  'content strategist',
-  // Advertising
-  'advertising creative',
-  'creative account manager',
+  // Core PM roles
+  'product manager',
+  'senior product manager',
+  'lead product manager',
+  'head of product',
+  'VP of product',
+  'chief product officer',
+  'director of product',
+  // Adjacent PM
+  'product owner',
+  'scrum master',
+  'agile coach',
+  'agile project manager',
+  // Business & strategy
+  'business analyst',
+  'product analyst',
+  'product strategy',
+  'product operations',
+  'product ops',
+  // Technical PM
+  'technical product manager',
+  'platform product manager',
+  'growth product manager',
+  // Program & project
+  'program manager',
+  'project manager',
+  'delivery manager',
+  'portfolio manager',
+  // Data & growth
+  'data product manager',
+  'growth manager',
+  // UX adjacent
+  'UX researcher',
+  'user researcher',
+  'UX strategist',
 ]
 
 interface AdzunaResult {
@@ -104,7 +96,7 @@ async function runInBatches<T>(
 }
 
 export async function scrapeAdzuna(
-  searchTerms: string[] = CREATIVE_CATEGORIES
+  searchTerms: string[] = CREATIVE_CATEGORIES // PM_CATEGORIES
 ): Promise<Omit<Job, 'id' | 'scraped_at'>[]> {
   const appId = process.env.ADZUNA_APP_ID
   const appKey = process.env.ADZUNA_APP_KEY

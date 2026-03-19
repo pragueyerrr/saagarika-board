@@ -3,49 +3,46 @@ import type { Job, JobSource } from '@/types'
 const JSEARCH_BASE = 'https://jsearch.p.rapidapi.com/search'
 
 const CREATIVE_QUERIES = [
-  // Leadership
-  'creative director Dubai',
-  'art director Dubai',
-  'design director Dubai',
-  'creative lead Dubai',
-  'head of creative Dubai',
-  // Design
-  'graphic designer Dubai',
-  'visual designer Dubai',
-  'digital designer Dubai',
-  'brand designer Dubai',
-  'UI UX designer Dubai',
-  'web designer Dubai',
-  'motion graphics designer Dubai',
-  'animator Dubai',
-  'illustrator Dubai',
-  '3D designer Dubai',
-  'product designer Dubai',
-  // Content & copy
-  'content creator Dubai',
-  'content writer Dubai',
-  'copywriter Dubai',
-  'scriptwriter Dubai',
-  'creative writer Dubai',
-  // Video & photo
-  'video editor Dubai',
-  'videographer Dubai',
-  'photographer Dubai',
-  'cinematographer Dubai',
-  'creative producer Dubai',
-  'content producer Dubai',
-  // Social & digital
-  'social media manager Dubai',
-  'social media creative Dubai',
-  'influencer marketing manager Dubai',
-  'digital marketing creative Dubai',
-  // Strategy & brand
-  'brand manager Dubai',
-  'creative strategist Dubai',
-  'content strategist Dubai',
-  // Advertising
-  'advertising creative Dubai',
-  'creative agency Dubai',
+  // Core PM
+  'product manager Dubai',
+  'senior product manager Dubai',
+  'lead product manager Dubai',
+  'head of product Dubai',
+  'director of product Dubai',
+  'VP product Dubai',
+  'chief product officer Dubai',
+  // Adjacent PM
+  'product owner Dubai',
+  'scrum master Dubai',
+  'agile coach Dubai',
+  'agile project manager Dubai',
+  // Business & analysis
+  'business analyst Dubai',
+  'product analyst Dubai',
+  'product strategy Dubai',
+  'product operations Dubai',
+  'product ops manager Dubai',
+  // Technical PM
+  'technical product manager Dubai',
+  'platform product manager Dubai',
+  'growth product manager Dubai',
+  // Program & project
+  'program manager Dubai',
+  'project manager Dubai',
+  'delivery manager Dubai',
+  'portfolio manager Dubai',
+  // Data & growth
+  'data product manager Dubai',
+  'growth manager Dubai',
+  // UX adjacent
+  'UX researcher Dubai',
+  'user researcher Dubai',
+  'UX strategist Dubai',
+  // Fintech / startup adjacent
+  'product manager fintech Dubai',
+  'product manager startup Dubai UAE',
+  'product manager ecommerce Dubai',
+  'product manager SaaS Dubai',
 ]
 
 interface JSearchJob {

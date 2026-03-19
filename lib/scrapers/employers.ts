@@ -1,13 +1,13 @@
 import * as cheerio from 'cheerio'
 import type { Job, JobSource } from '@/types'
 
-// Direct employer career pages - Dubai creative/media companies
+// Direct employer career pages - Dubai tech, fintech, and enterprise companies with PM roles
 const EMPLOYER_SITES = [
-  // Media publishers
+  // Major tech / super-apps
   {
-    name: 'Motivate Media',
-    url: 'https://www.motivatemedia.com/careers/',
-    source: 'motivate_media',
+    name: 'Careem',
+    url: 'https://www.careem.com/en-ae/careers/',
+    source: 'careem',
     selectors: {
       item: '.job, .career, .position, article, .vacancy, [class*="job"], [class*="career"], [class*="position"]',
       title: 'h1, h2, h3, h4, a, .title, [class*="title"]',
@@ -15,20 +15,20 @@ const EMPLOYER_SITES = [
     },
   },
   {
-    name: 'ITP Media Group',
-    url: 'https://www.itpmediagroup.com/careers',
-    source: 'itp_media',
+    name: 'Noon',
+    url: 'https://www.noon.com/uae-en/careers/',
+    source: 'noon',
     selectors: {
       item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
       link: 'a',
     },
   },
-  // Advertising agencies
+  // Fintech
   {
-    name: 'Publicis Groupe',
-    url: 'https://www.publicisgroupe.com/en/careers',
-    source: 'publicis',
+    name: 'Tabby',
+    url: 'https://tabby.ai/careers',
+    source: 'tabby',
     selectors: {
       item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, .title, [class*="title"]',
@@ -36,9 +36,9 @@ const EMPLOYER_SITES = [
     },
   },
   {
-    name: 'TBWA RAAD',
-    url: 'https://www.tbwaraad.com/careers',
-    source: 'tbwa_raad',
+    name: 'Tamara',
+    url: 'https://tamara.co/careers',
+    source: 'tamara',
     selectors: {
       item: '.job, .career, .position, article, .vacancy, [class*="job"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
@@ -46,19 +46,20 @@ const EMPLOYER_SITES = [
     },
   },
   {
-    name: 'Leo Burnett MENA',
-    url: 'https://www.leoburnett.com/mena/careers',
-    source: 'leo_burnett',
+    name: 'Ziina',
+    url: 'https://ziina.com/careers',
+    source: 'ziina',
     selectors: {
       item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
       link: 'a',
     },
   },
+  // Enterprise / consulting
   {
-    name: 'FP7 McCann',
-    url: 'https://fp7mccann.com/careers',
-    source: 'fp7_mccann',
+    name: 'Chalhoub Group',
+    url: 'https://www.chalhoubgroup.com/careers',
+    source: 'chalhoub',
     selectors: {
       item: '.job, .career, .position, article, [class*="job"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
@@ -66,36 +67,16 @@ const EMPLOYER_SITES = [
     },
   },
   {
-    name: 'Memac Ogilvy',
-    url: 'https://www.memacogilvy.com/careers',
-    source: 'memac_ogilvy',
+    name: 'Majid Al Futtaim',
+    url: 'https://www.majidalfuttaim.com/en/careers',
+    source: 'maf',
     selectors: {
       item: '.job, .career, .vacancy, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
       link: 'a',
     },
   },
-  {
-    name: 'Havas Middle East',
-    url: 'https://www.havas.com/careers/',
-    source: 'havas_me',
-    selectors: {
-      item: '.job, .career, .position, article, [class*="job"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  // Real estate / hospitality with big creative teams
-  {
-    name: 'Jumeirah Group',
-    url: 'https://www.jumeirah.com/en/jumeirah-group/careers',
-    source: 'jumeirah',
-    selectors: {
-      item: '.job-listing, .career-item, article, .position, [class*="job"]',
-      title: 'h2, h3, h4, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
+  // Real estate / smart city
   {
     name: 'Emaar',
     url: 'https://www.emaar.com/en/careers/',
@@ -106,22 +87,43 @@ const EMPLOYER_SITES = [
       link: 'a',
     },
   },
-  // Broadcast & streaming
   {
-    name: 'MBC Group',
-    url: 'https://www.mbc.net/en/corporate/careers.html',
-    source: 'mbc_group',
+    name: 'DEWA',
+    url: 'https://www.dewa.gov.ae/en/about-dewa/careers',
+    source: 'dewa',
     selectors: {
       item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
       link: 'a',
     },
   },
-  // Government creative / tourism
+  // Hospitality / travel tech
   {
-    name: 'Dubai Tourism',
-    url: 'https://www.visitdubai.com/en/about-dtcm/careers',
-    source: 'dubai_tourism',
+    name: 'Jumeirah Group',
+    url: 'https://www.jumeirah.com/en/jumeirah-group/careers',
+    source: 'jumeirah',
+    selectors: {
+      item: '.job-listing, .career-item, article, .position, [class*="job"]',
+      title: 'h2, h3, h4, .title, [class*="title"]',
+      link: 'a',
+    },
+  },
+  // Telecoms
+  {
+    name: 'du Telecom',
+    url: 'https://www.du.ae/careers',
+    source: 'du_telecom',
+    selectors: {
+      item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
+      title: 'h2, h3, h4, a, .title, [class*="title"]',
+      link: 'a',
+    },
+  },
+  // Government / smart city
+  {
+    name: 'Smart Dubai',
+    url: 'https://www.smartdubai.ae/careers',
+    source: 'smart_dubai',
     selectors: {
       item: '.job, .career, .vacancy, article, [class*="job"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
@@ -130,19 +132,21 @@ const EMPLOYER_SITES = [
   },
 ]
 
-const CREATIVE_KEYWORDS = [
-  'creative', 'design', 'content', 'social media', 'video', 'photo',
-  'copy', 'brand', 'marketing', 'art director', 'producer', 'editor',
-  'motion', 'digital', 'media', 'campaign', 'advertising', 'visual',
-  'graphic', 'ux', 'ui', 'communications', 'pr', 'storytell',
-  'animator', 'animation', 'illustrat', 'filmmaker', '3d', 'vfx',
-  'writer', 'script', 'photograph', 'cinemat', 'influencer',
-  'broadcast', 'publish', 'editorial', 'art department',
+const PM_KEYWORDS = [
+  'product manager', 'product owner', 'scrum master', 'agile',
+  'business analyst', 'product analyst', 'product strategy',
+  'product operations', 'product ops', 'program manager',
+  'project manager', 'delivery manager', 'portfolio manager',
+  'growth manager', 'growth product', 'technical product',
+  'platform product', 'data product', 'ux researcher',
+  'user researcher', 'ux strategist', 'product lead',
+  'head of product', 'vp product', 'chief product',
+  'director of product', 'roadmap', 'sprint', 'backlog',
 ]
 
 function isCreativeRole(title: string): boolean {
   const t = title.toLowerCase()
-  return CREATIVE_KEYWORDS.some((kw) => t.includes(kw))
+  return PM_KEYWORDS.some((kw) => t.includes(kw))
 }
 
 async function scrapeEmployerSite(

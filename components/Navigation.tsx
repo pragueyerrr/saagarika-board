@@ -33,7 +33,7 @@ export default function Navigation() {
               style={{ background: 'var(--red-dim)', border: '1px solid rgba(244,63,94,0.3)' }}>
               <Terminal className="w-4 h-4" style={{ color: 'var(--red)' }} />
             </div>
-            <span className="font-semibold" style={{ color: 'var(--red)' }}>Aman&apos;s Board</span>
+            <span className="font-semibold" style={{ color: 'var(--red)' }}>NanBan&apos;s Board</span>
             <span className="text-xs px-1.5 py-0.5 rounded font-medium hidden sm:block"
               style={{ background: 'var(--bg-raised)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
               ~ Dubai
