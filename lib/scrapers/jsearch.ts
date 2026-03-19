@@ -3,46 +3,14 @@ import type { Job, JobSource } from '@/types'
 const JSEARCH_BASE = 'https://jsearch.p.rapidapi.com/search'
 
 const CREATIVE_QUERIES = [
-  // Core PM
   'product manager Dubai',
   'senior product manager Dubai',
-  'lead product manager Dubai',
   'head of product Dubai',
-  'director of product Dubai',
-  'VP product Dubai',
-  'chief product officer Dubai',
-  // Adjacent PM
   'product owner Dubai',
-  'scrum master Dubai',
-  'agile coach Dubai',
-  'agile project manager Dubai',
-  // Business & analysis
   'business analyst Dubai',
-  'product analyst Dubai',
-  'product strategy Dubai',
-  'product operations Dubai',
-  'product ops manager Dubai',
-  // Technical PM
-  'technical product manager Dubai',
-  'platform product manager Dubai',
-  'growth product manager Dubai',
-  // Program & project
   'program manager Dubai',
   'project manager Dubai',
-  'delivery manager Dubai',
-  'portfolio manager Dubai',
-  // Data & growth
-  'data product manager Dubai',
-  'growth manager Dubai',
-  // UX adjacent
-  'UX researcher Dubai',
-  'user researcher Dubai',
-  'UX strategist Dubai',
-  // Fintech / startup adjacent
-  'product manager fintech Dubai',
-  'product manager startup Dubai UAE',
-  'product manager ecommerce Dubai',
-  'product manager SaaS Dubai',
+  'scrum master Dubai',
 ]
 
 interface JSearchJob {
@@ -71,7 +39,7 @@ async function fetchJSearchQuery(query: string, apiKey: string): Promise<JSearch
       'X-RapidAPI-Key': apiKey,
       'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
     },
-    signal: AbortSignal.timeout(10000),
+    signal: AbortSignal.timeout(5000),
   })
   if (!res.ok) return []
   const data: JSearchResponse = await res.json()

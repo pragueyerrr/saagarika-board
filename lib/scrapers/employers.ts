@@ -1,29 +1,8 @@
 import * as cheerio from 'cheerio'
 import type { Job, JobSource } from '@/types'
 
-// Direct employer career pages - Dubai tech, fintech, and enterprise companies with PM roles
+// Direct employer career pages - Dubai tech and enterprise companies with PM roles
 const EMPLOYER_SITES = [
-  // Major tech / super-apps
-  {
-    name: 'Careem',
-    url: 'https://www.careem.com/en-ae/careers/',
-    source: 'careem',
-    selectors: {
-      item: '.job, .career, .position, article, .vacancy, [class*="job"], [class*="career"], [class*="position"]',
-      title: 'h1, h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  {
-    name: 'Noon',
-    url: 'https://www.noon.com/uae-en/careers/',
-    source: 'noon',
-    selectors: {
-      item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
   // Fintech
   {
     name: 'Tabby',
@@ -52,59 +31,6 @@ const EMPLOYER_SITES = [
     selectors: {
       item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
       title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  // Enterprise / consulting
-  {
-    name: 'Chalhoub Group',
-    url: 'https://www.chalhoubgroup.com/careers',
-    source: 'chalhoub',
-    selectors: {
-      item: '.job, .career, .position, article, [class*="job"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  {
-    name: 'Majid Al Futtaim',
-    url: 'https://www.majidalfuttaim.com/en/careers',
-    source: 'maf',
-    selectors: {
-      item: '.job, .career, .vacancy, article, [class*="job"], [class*="career"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  // Real estate / smart city
-  {
-    name: 'Emaar',
-    url: 'https://www.emaar.com/en/careers/',
-    source: 'emaar',
-    selectors: {
-      item: '.job, .career, .vacancy, article, [class*="job"], [class*="career"]',
-      title: 'h2, h3, h4, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  {
-    name: 'DEWA',
-    url: 'https://www.dewa.gov.ae/en/about-dewa/careers',
-    source: 'dewa',
-    selectors: {
-      item: '.job, .career, .position, article, [class*="job"], [class*="career"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  // Hospitality / travel tech
-  {
-    name: 'Jumeirah Group',
-    url: 'https://www.jumeirah.com/en/jumeirah-group/careers',
-    source: 'jumeirah',
-    selectors: {
-      item: '.job-listing, .career-item, article, .position, [class*="job"]',
-      title: 'h2, h3, h4, .title, [class*="title"]',
       link: 'a',
     },
   },
