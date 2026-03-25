@@ -1,6 +1,6 @@
-# Sanobar's Board
+# Saagarika's Board
 
-A personal job tracker built for my friend Sanobar, a marketing professional looking for her next role in Dubai.
+A personal job tracker built for my friend Saagarika, a data analysis & insights professional looking for roles in Dubai (and remote full-time).
 
 ---
 

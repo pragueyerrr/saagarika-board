@@ -1,45 +1,69 @@
 import type { Job, JobSource } from '@/types'
 
 const ADZUNA_BASE = 'https://api.adzuna.com/v1/api/jobs/ae/search'
+const ADZUNA_BASE_GLOBAL = 'https://api.adzuna.com/v1/api/jobs/gb/search' // for remote roles
 
-const CREATIVE_CATEGORIES = [
-  // Core social media
-  'social media manager',
-  'social media strategist',
-  'social media coordinator',
-  'social media assistant',
-  'social media specialist',
-  'head of social media',
-  // Performance marketing
-  'performance marketing manager',
-  'performance marketing specialist',
-  'paid social manager',
-  'paid media manager',
-  'PPC manager',
-  // Digital marketing
-  'digital marketing manager',
-  'digital marketing specialist',
-  'digital marketing coordinator',
-  'growth marketing manager',
-  // Content marketing
-  'content marketing manager',
-  'content strategist',
-  'content manager',
-  // Brand & strategy
-  'brand manager',
-  'marketing manager',
-  'marketing coordinator',
-  'marketing assistant',
-  'marketing strategist',
-  // Reach roles (masters-level)
-  'head of digital marketing',
-  'head of marketing',
-  'marketing director',
-  'CRM manager',
-  'email marketing manager',
-  'media planner',
-  'e-commerce marketing manager',
+const DATA_CATEGORIES = [
+  // Core data analyst roles
+  'data analyst',
+  'junior data analyst',
+  'senior data analyst',
+  'lead data analyst',
+  // Business & commercial analyst
+  'business analyst',
+  'commercial analyst',
+  'financial analyst',
+  'revenue analyst',
+  // Research & insights
+  'research analyst',
+  'insights analyst',
+  'market research analyst',
+  'consumer insights analyst',
+  'customer insights analyst',
+  'UX researcher',
+  // BI & reporting
+  'business intelligence analyst',
+  'BI analyst',
+  'reporting analyst',
+  'data and insights analyst',
+  // Data science (adjacent)
+  'data scientist',
+  'junior data scientist',
+  // Analytics management
+  'analytics manager',
+  'data manager',
+  'insights manager',
+  // Strategy & operations
+  'strategy analyst',
+  'operations analyst',
+  'growth analyst',
+  'product analyst',
 ]
+
+// Phrases that indicate the role requires residency/authorization incompatible with a Dubai golden visa
+const EXCLUSION_PHRASES = [
+  'us citizen',
+  'us citizenship',
+  'u.s. citizen',
+  'u.s. citizenship',
+  'us work authorization',
+  'must be authorized to work in the united states',
+  'authorized to work in the us',
+  'green card',
+  'security clearance',
+  'secret clearance',
+  'top secret',
+  'dod clearance',
+  'must reside in',
+  'must be based in the us',
+  'must be located in the us',
+  'must be a us resident',
+]
+
+function isExcluded(job: { title: string; description?: string }): boolean {
+  const text = `${job.title} ${job.description ?? ''}`.toLowerCase()
+  return EXCLUSION_PHRASES.some((phrase) => text.includes(phrase))
+}
 
 interface AdzunaResult {
   id: string
@@ -62,17 +86,19 @@ interface AdzunaResponse {
 async function fetchAdzunaTerm(
   term: string,
   appId: string,
-  appKey: string
+  appKey: string,
+  baseUrl: string = ADZUNA_BASE,
+  where: string = 'dubai'
 ): Promise<AdzunaResult[]> {
   const params = new URLSearchParams({
     app_id: appId,
     app_key: appKey,
     results_per_page: '20',
     what: term,
-    where: 'dubai',
+    where,
     'content-type': 'application/json',
   })
-  const res = await fetch(`${ADZUNA_BASE}/1?${params}`, {
+  const res = await fetch(`${baseUrl}/1?${params}`, {
     signal: AbortSignal.timeout(10000),
   })
   if (!res.ok) return []
@@ -96,9 +122,7 @@ async function runInBatches<T>(
   return results
 }
 
-export async function scrapeAdzuna(
-  searchTerms: string[] = CREATIVE_CATEGORIES // PM_CATEGORIES
-): Promise<Omit<Job, 'id' | 'scraped_at'>[]> {
+export async function scrapeAdzuna(): Promise<Omit<Job, 'id' | 'scraped_at'>[]> {
   const appId = process.env.ADZUNA_APP_ID
   const appKey = process.env.ADZUNA_APP_KEY
 
@@ -108,15 +132,27 @@ export async function scrapeAdzuna(
   }
 
   const seen = new Set<string>()
-  const rawResults = await runInBatches(searchTerms, 5, (term) =>
-    fetchAdzunaTerm(term, appId, appKey).catch((err) => {
-      console.error(`Adzuna error for term "${term}":`, err)
+
+  // Dubai-based roles
+  const dubaiResults = await runInBatches(DATA_CATEGORIES, 5, (term) =>
+    fetchAdzunaTerm(term, appId, appKey, ADZUNA_BASE, 'dubai').catch((err) => {
+      console.error(`Adzuna (Dubai) error for term "${term}":`, err)
       return []
     })
   )
 
+  // Remote roles (GB API as proxy for global remote listings)
+  const remoteResults = await runInBatches(DATA_CATEGORIES.slice(0, 12), 5, (term) =>
+    fetchAdzunaTerm(term, appId, appKey, ADZUNA_BASE_GLOBAL, 'remote').catch((err) => {
+      console.error(`Adzuna (remote) error for term "${term}":`, err)
+      return []
+    })
+  )
+
+  const allRaw = [...dubaiResults, ...remoteResults]
   const allJobs: Omit<Job, 'id' | 'scraped_at'>[] = []
-  for (const r of rawResults) {
+
+  for (const r of allRaw) {
     if (seen.has(r.id)) continue
     seen.add(r.id)
 
@@ -125,7 +161,7 @@ export async function scrapeAdzuna(
         ? `AED ${Math.round(r.salary_min / 12).toLocaleString()} – ${Math.round(r.salary_max / 12).toLocaleString()} /month`
         : undefined
 
-    allJobs.push({
+    const job = {
       external_id: r.id,
       source: 'adzuna' as JobSource,
       title: r.title,
@@ -137,7 +173,10 @@ export async function scrapeAdzuna(
       job_type: r.contract_time,
       posted_at: r.created,
       is_active: true,
-    })
+    }
+
+    if (isExcluded(job)) continue
+    allJobs.push(job)
   }
 
   return allJobs

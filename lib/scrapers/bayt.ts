@@ -3,8 +3,8 @@ import type { Job, JobSource } from '@/types'
 
 // Respectful scraping: single page, proper headers, no loops
 const BAYT_SEARCH_URL =
-  'https://www.bayt.com/en/uae/jobs/?filters[country_id][0]=1&filters[city_id][0]=8&filters[jl_category_id_l1][0]=25'
-// category 25 = Marketing, Advertising & PR / Creative
+  'https://www.bayt.com/en/uae/jobs/?filters[country_id][0]=1&filters[city_id][0]=8&filters[jl_category_id_l1][0]=8'
+// category 8 = IT & Technology / Data (covers data analyst, BI, research analyst roles on Bayt)
 
 const HEADERS = {
   'User-Agent':

@@ -130,16 +130,16 @@ export default function DashboardPage() {
             got it ✕
           </button>
           <h2 className="font-semibold mb-3" style={{ color: 'var(--red)' }}>
-            👋 Hi babygirl! &lt;3 Welcome to your board!
+            👋 Hi Saagarika! Welcome to your board!
           </h2>
           <ol className="space-y-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
             <li>📄 <strong>Step 1:</strong> Go to <strong>My CV</strong> and upload your CV so the AI knows who you are</li>
-            <li>🔍 <strong>Step 2:</strong> Head to <strong>Jobs</strong> and hit <strong>Refresh Jobs</strong> to pull in the latest PM listings</li>
+            <li>🔍 <strong>Step 2:</strong> Head to <strong>Jobs</strong> and hit <strong>Refresh Jobs</strong> to pull in the latest data & insights listings</li>
             <li>⭐ <strong>Step 3:</strong> Click <strong>Score Match</strong> on any job to see how well it fits you</li>
             <li>💾 <strong>Step 4:</strong> Hit <strong>Save Job</strong> on the ones you like to track them</li>
             <li>📝 <strong>Step 5:</strong> In <strong>Applications</strong>, generate a tailored resume for each one!</li>
           </ol>
-          <p className="text-xs mt-3" style={{ color: 'var(--pink)' }}>good luck out there!! you got this 🌸</p>
+          <p className="text-xs mt-3" style={{ color: 'var(--pink)' }}>jobs from Dubai + remote full-time — you&apos;ve got this! 🌸</p>
         </div>
       )}
 
@@ -151,7 +151,7 @@ export default function DashboardPage() {
             Dashboard
           </h1>
           <p className="text-slate-500 text-sm mt-1">
-            Your Dubai marketing job hunt at a glance
+            Your data & insights job hunt at a glance
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -292,7 +292,7 @@ export default function DashboardPage() {
             href: '/jobs',
             icon: Briefcase,
             title: 'Browse Jobs',
-            desc: 'Explore scraped Dubai marketing jobs',
+            desc: 'Explore data & insights jobs in Dubai + remote',
           },
           {
             href: '/applications',

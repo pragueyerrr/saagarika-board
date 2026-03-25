@@ -11,7 +11,7 @@ export async function generateResumeData(
   const cvData = cv.parsed_data as ParsedCV | undefined
   const cvText = cv.raw_text ?? JSON.stringify(cvData ?? {})
 
-  const systemPrompt = `You are an expert resume writer specializing in marketing, social media, and performance marketing roles in Dubai (social media manager, social media strategist, performance marketing, digital marketing, content marketing, brand manager, growth marketing).
+  const systemPrompt = `You are an expert resume writer specializing in data analysis, business intelligence, market research, and insights roles in Dubai and remote (data analyst, business analyst, research analyst, insights analyst, BI analyst, data scientist, product analyst, strategy analyst).
 
 Your goal: craft a HIGHLY TAILORED, one-page resume for this candidate applying to this specific job.
 
@@ -19,9 +19,9 @@ RULES:
 1. The resume MUST fit on one page — adjust bullet count, font size hint, and compact flag accordingly
 2. Prioritize skills/experiences most relevant to THIS specific job
 3. Summary must be 2-3 lines max, directly addressing the role
-4. Skills must be grouped by category, most relevant first (e.g. Social Media & Content, Performance Marketing, Tools & Platforms, Analytics)
+4. Skills must be grouped by category, most relevant first (e.g. Data Analysis & Statistics, Tools & Platforms, Business Intelligence, Research & Insights)
 5. Each job should have 2-4 bullets maximum (compact: 2, normal: 3-4)
-6. Use strong action verbs, quantify where possible (e.g. "Grew Instagram following by X%", "Managed AED Xk monthly ad spend", "Increased ROAS by X%")
+6. Use strong action verbs, quantify where possible (e.g. "Reduced reporting time by X%", "Analysed dataset of Xk records", "Built dashboard tracking X KPIs", "Delivered insights that drove X% revenue uplift")
 7. Return ONLY valid JSON — no markdown fences, no explanation`
 
   const userPrompt = `JOB POSTING:
@@ -57,10 +57,10 @@ Return this exact JSON structure:
   "portfolio": "portfolio.com",
   "summary": "2-3 sentence professional summary tailored to this role",
   "skills": [
-    { "category": "Social Media & Content", "items": ["Instagram", "TikTok", "LinkedIn", "Content Strategy"] },
-    { "category": "Performance Marketing", "items": ["Meta Ads", "Google Ads", "Paid Social", "PPC"] },
-    { "category": "Tools & Platforms", "items": ["Hootsuite", "Sprout Social", "Canva", "HubSpot"] },
-    { "category": "Analytics", "items": ["Google Analytics", "Meta Business Suite", "Looker Studio"] }
+    { "category": "Data Analysis & Statistics", "items": ["Python", "R", "SQL", "Statistical Modelling"] },
+    { "category": "Business Intelligence", "items": ["Tableau", "Power BI", "Looker", "Google Data Studio"] },
+    { "category": "Tools & Platforms", "items": ["Excel", "Google Sheets", "Jupyter", "dbt"] },
+    { "category": "Research & Insights", "items": ["Survey Design", "Market Research", "A/B Testing", "User Research"] }
   ],
   "experiences": [
     {
@@ -69,8 +69,8 @@ Return this exact JSON structure:
       "location": "Dubai, UAE",
       "period": "Jan 2022 – Present",
       "bullets": [
-        "Grew brand Instagram following by X% in 6 months through targeted content strategy",
-        "Managed AED Xk monthly Meta Ads budget, achieving X% ROAS improvement"
+        "Built automated dashboard tracking 12 KPIs, reducing weekly reporting time by 60%",
+        "Analysed customer dataset of 200k records to surface segmentation insights that drove 18% revenue uplift"
       ],
       "relevanceScore": 90
     }
@@ -83,7 +83,7 @@ Return this exact JSON structure:
       "year": "2018"
     }
   ],
-  "certifications": ["Meta Certified Digital Marketing Associate", "Google Analytics Certification"],
+  "certifications": ["Google Data Analytics Certificate", "Tableau Desktop Specialist"],
   "fontSizePt": 10,
   "compact": false
 }
@@ -123,7 +123,7 @@ export async function generateCoverLetterStream(
     messages: [
       {
         role: 'user',
-        content: `You are an expert cover letter writer for marketing and social media professionals in Dubai.
+        content: `You are an expert cover letter writer for data analysis and insights professionals in Dubai and remote roles.
 
 Write a compelling, personalized cover letter for this candidate applying to this job.
 
@@ -139,13 +139,13 @@ Description: ${job.description ?? ''}
 Requirements: ${job.requirements ?? ''}
 
 GUIDELINES:
-- 3-4 paragraphs, professional yet warm tone appropriate for marketing and brand roles
-- Opening: Hook with specific enthusiasm for THIS company/brand — reference their campaigns, social presence, or values
-- Middle 1-2 paragraphs: Connect 2-3 specific marketing achievements to the job requirements (growth metrics, ad spend managed, content performance)
+- 3-4 paragraphs, professional yet warm tone appropriate for data and research roles
+- Opening: Hook with specific enthusiasm for THIS company — reference their data-driven approach, products, or industry position
+- Middle 1-2 paragraphs: Connect 2-3 specific data/research achievements to the job requirements (datasets analysed, dashboards built, insights that drove business decisions)
 - Closing: Clear call to action
 - Max 350 words
 - Do NOT use generic phrases like "I am writing to express my interest"
-- Reference Dubai's vibrant marketing and brand ecosystem if relevant
+- Reference Dubai's growing data and tech ecosystem or global remote culture where relevant
 - Format: Just the letter body (no date, no address headers needed)
 - End with exactly ONE sign-off (e.g. "Warm regards, [Name]") — do NOT include two closings`,
       },
