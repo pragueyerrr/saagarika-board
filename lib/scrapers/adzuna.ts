@@ -75,9 +75,8 @@ async function fetchAdzunaTerm(
   const params = new URLSearchParams({
     app_id: appId,
     app_key: appKey,
-    results_per_page: '20',
+    results_per_page: '50',
     what: term,
-    where: 'dubai',
     'content-type': 'application/json',
   })
   const res = await fetch(`${ADZUNA_BASE}/1?${params}`, {
