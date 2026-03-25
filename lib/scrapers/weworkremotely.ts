@@ -51,11 +51,16 @@ async function fetchWWRFeed(url: string): Promise<RSSItem[]> {
     headers: { 'User-Agent': 'Mozilla/5.0 (compatible; JobAggregator/1.0; personal use)' },
     signal: AbortSignal.timeout(10000),
   })
-  if (!res.ok) return []
+  if (!res.ok) {
+    console.warn(`WWR feed ${url} returned ${res.status}`)
+    return []
+  }
   const xml = await res.text()
   const feed: RSSFeed = parser.parse(xml)
   const items = feed.rss?.channel?.item
-  return Array.isArray(items) ? items : items ? [items] : []
+  const arr = Array.isArray(items) ? items : items ? [items] : []
+  console.log(`WWR ${url}: ${arr.length} items`)
+  return arr
 }
 
 export async function scrapeWeWorkRemotely(): Promise<Omit<Job, 'id' | 'scraped_at'>[]> {

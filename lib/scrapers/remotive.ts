@@ -52,8 +52,12 @@ async function fetchRemotiveCategory(category: string): Promise<RemotiveJob[]> {
     headers: { Accept: 'application/json' },
     signal: AbortSignal.timeout(10000),
   })
-  if (!res.ok) return []
+  if (!res.ok) {
+    console.warn(`Remotive ${category} returned ${res.status}`)
+    return []
+  }
   const data: RemotiveResponse = await res.json()
+  console.log(`Remotive ${category}: ${data.jobs?.length ?? 0} jobs`)
   return data.jobs ?? []
 }
 
