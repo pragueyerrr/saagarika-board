@@ -1,43 +1,27 @@
 import type { Job, JobSource } from '@/types'
 
 const ADZUNA_BASE = 'https://api.adzuna.com/v1/api/jobs/ae/search'
-const ADZUNA_BASE_GLOBAL = 'https://api.adzuna.com/v1/api/jobs/gb/search' // for remote roles
 
 const DATA_CATEGORIES = [
-  // Core data analyst roles
+  // Broad first — these get the most Adzuna UAE results
   'data analyst',
-  'junior data analyst',
-  'senior data analyst',
-  'lead data analyst',
-  // Business & commercial analyst
   'business analyst',
-  'commercial analyst',
-  'financial analyst',
-  'revenue analyst',
+  'data scientist',
+  'analytics',
   // Research & insights
   'research analyst',
   'insights analyst',
-  'market research analyst',
-  'consumer insights analyst',
-  'customer insights analyst',
-  'UX researcher',
+  'market research',
   // BI & reporting
-  'business intelligence analyst',
+  'business intelligence',
   'BI analyst',
   'reporting analyst',
-  'data and insights analyst',
-  // Data science (adjacent)
-  'data scientist',
-  'junior data scientist',
-  // Analytics management
-  'analytics manager',
-  'data manager',
-  'insights manager',
-  // Strategy & operations
+  // Adjacent
+  'financial analyst',
+  'commercial analyst',
+  'product analyst',
   'strategy analyst',
   'operations analyst',
-  'growth analyst',
-  'product analyst',
 ]
 
 // Phrases that indicate the role requires residency/authorization incompatible with a Dubai golden visa
@@ -86,19 +70,17 @@ interface AdzunaResponse {
 async function fetchAdzunaTerm(
   term: string,
   appId: string,
-  appKey: string,
-  baseUrl: string = ADZUNA_BASE,
-  where: string = 'dubai'
+  appKey: string
 ): Promise<AdzunaResult[]> {
   const params = new URLSearchParams({
     app_id: appId,
     app_key: appKey,
     results_per_page: '20',
     what: term,
-    where,
+    where: 'dubai',
     'content-type': 'application/json',
   })
-  const res = await fetch(`${baseUrl}/1?${params}`, {
+  const res = await fetch(`${ADZUNA_BASE}/1?${params}`, {
     signal: AbortSignal.timeout(10000),
   })
   if (!res.ok) return []
@@ -133,23 +115,12 @@ export async function scrapeAdzuna(): Promise<Omit<Job, 'id' | 'scraped_at'>[]> 
 
   const seen = new Set<string>()
 
-  // Dubai-based roles
-  const dubaiResults = await runInBatches(DATA_CATEGORIES, 5, (term) =>
-    fetchAdzunaTerm(term, appId, appKey, ADZUNA_BASE, 'dubai').catch((err) => {
-      console.error(`Adzuna (Dubai) error for term "${term}":`, err)
+  const allRaw = await runInBatches(DATA_CATEGORIES, 5, (term) =>
+    fetchAdzunaTerm(term, appId, appKey).catch((err) => {
+      console.error(`Adzuna error for term "${term}":`, err)
       return []
     })
   )
-
-  // Remote roles (GB API as proxy for global remote listings)
-  const remoteResults = await runInBatches(DATA_CATEGORIES.slice(0, 12), 5, (term) =>
-    fetchAdzunaTerm(term, appId, appKey, ADZUNA_BASE_GLOBAL, 'remote').catch((err) => {
-      console.error(`Adzuna (remote) error for term "${term}":`, err)
-      return []
-    })
-  )
-
-  const allRaw = [...dubaiResults, ...remoteResults]
   const allJobs: Omit<Job, 'id' | 'scraped_at'>[] = []
 
   for (const r of allRaw) {

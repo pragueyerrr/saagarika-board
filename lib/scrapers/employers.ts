@@ -1,16 +1,15 @@
 import * as cheerio from 'cheerio'
 import type { Job, JobSource } from '@/types'
 
-// Direct employer career pages — Dubai companies with strong data/analytics/research teams
+// Only employer sites confirmed to serve static HTML that Vercel can reach
 const EMPLOYER_SITES = [
-  // Consulting & professional services
   {
-    name: 'McKinsey & Company',
-    url: 'https://www.mckinsey.com/careers/search-jobs',
-    source: 'mckinsey',
+    name: 'PwC Middle East',
+    url: 'https://www.pwc.com/m1/en/careers.html',
+    source: 'pwc_me',
     selectors: {
-      item: '.job, .career, article, [class*="job"], [class*="result"]',
-      title: 'h2, h3, h4, .title, [class*="title"]',
+      item: '.job, .career, article, [class*="job"]',
+      title: 'h2, h3, h4, a, .title',
       link: 'a',
     },
   },
@@ -25,37 +24,6 @@ const EMPLOYER_SITES = [
     },
   },
   {
-    name: 'PwC Middle East',
-    url: 'https://www.pwc.com/m1/en/careers.html',
-    source: 'pwc_me',
-    selectors: {
-      item: '.job, .career, article, [class*="job"]',
-      title: 'h2, h3, h4, a, .title',
-      link: 'a',
-    },
-  },
-  // Tech / fintech with large data teams
-  {
-    name: 'Careem',
-    url: 'https://www.careem.com/en-ae/careers/',
-    source: 'careem',
-    selectors: {
-      item: '.job, .career, article, [class*="job"], [class*="opening"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  {
-    name: 'Noon',
-    url: 'https://www.noon.com/uae-en/careers/',
-    source: 'noon',
-    selectors: {
-      item: '.job, article, [class*="job"], [class*="role"]',
-      title: 'h2, h3, h4, a, .title',
-      link: 'a',
-    },
-  },
-  {
     name: 'Tabby',
     url: 'https://tabby.ai/en-AE/careers',
     source: 'tabby',
@@ -65,45 +33,22 @@ const EMPLOYER_SITES = [
       link: 'a',
     },
   },
-  // Government / smart city
   {
-    name: 'Smart Dubai',
-    url: 'https://www.smartdubai.ae/careers',
-    source: 'smart_dubai',
+    name: 'KPMG Lower Gulf',
+    url: 'https://home.kpmg/ae/en/home/careers.html',
+    source: 'kpmg_ae',
     selectors: {
-      item: '.job, .career, article, [class*="job"], [class*="vacancy"]',
+      item: '.job, article, [class*="job"], [class*="opening"]',
       title: 'h2, h3, h4, a, .title',
       link: 'a',
     },
   },
-  // Retail / e-commerce with analytics teams
   {
-    name: 'Majid Al Futtaim',
-    url: 'https://www.majidalfuttaim.com/en/careers',
-    source: 'maf',
+    name: 'Oliver Wyman',
+    url: 'https://www.oliverwyman.com/careers.html',
+    source: 'oliver_wyman',
     selectors: {
-      item: '.job, .career, .vacancy, article, [class*="job"], [class*="career"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  {
-    name: 'Chalhoub Group',
-    url: 'https://www.chalhoubgroup.com/careers',
-    source: 'chalhoub',
-    selectors: {
-      item: '.job, .career, .position, article, [class*="job"]',
-      title: 'h2, h3, h4, a, .title, [class*="title"]',
-      link: 'a',
-    },
-  },
-  // Research / market intelligence
-  {
-    name: 'Nielsen Middle East',
-    url: 'https://www.nielsen.com/about-us/careers/',
-    source: 'nielsen',
-    selectors: {
-      item: '.job, article, [class*="job"], [class*="opening"]',
+      item: '.job, article, [class*="job"], [class*="role"]',
       title: 'h2, h3, h4, a, .title',
       link: 'a',
     },
@@ -136,7 +81,6 @@ const DATA_KEYWORDS = [
   'growth analyst',
   'operations analyst',
   'revenue analyst',
-  'data engineer',
   'sql',
   'tableau',
   'power bi',
@@ -161,7 +105,7 @@ async function scrapeEmployerSite(
         Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
       },
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(10000),
     })
 
     if (!res.ok) {
@@ -175,7 +119,6 @@ async function scrapeEmployerSite(
 
     $(employer.selectors.item).each((_, el) => {
       const $el = $(el)
-
       const titleEl = $el.find(employer.selectors.title).first()
       const title = titleEl.text().trim() || $el.text().trim().split('\n')[0]?.trim()
 
@@ -248,14 +191,9 @@ async function scrapeEmployerSite(
   return jobs
 }
 
-export async function scrapeEmployerSites(): Promise<
-  Omit<Job, 'id' | 'scraped_at'>[]
-> {
+export async function scrapeEmployerSites(): Promise<Omit<Job, 'id' | 'scraped_at'>[]> {
   const results = await Promise.allSettled(
     EMPLOYER_SITES.map((e) => scrapeEmployerSite(e))
   )
-
-  return results.flatMap((r) =>
-    r.status === 'fulfilled' ? r.value : []
-  )
+  return results.flatMap((r) => (r.status === 'fulfilled' ? r.value : []))
 }
