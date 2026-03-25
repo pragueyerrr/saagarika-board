@@ -3,6 +3,8 @@ import { scrapeIndeedRSS } from './indeed'
 import { scrapesBayt } from './bayt'
 import { scrapeEmployerSites } from './employers'
 import { scrapeJSearch } from './jsearch'
+import { scrapeRemotive } from './remotive'
+import { scrapeWeWorkRemotely } from './weworkremotely'
 import { getCached, setCached, cacheKeys, CACHE_TTL } from '@/lib/redis'
 import { createAdminClient } from '@/lib/supabase'
 import type { Job } from '@/types'
@@ -17,7 +19,7 @@ export interface ScrapeResult {
 export async function scrapeAllSources(force = false): Promise<ScrapeResult> {
   const result: ScrapeResult = { inserted: 0, skipped: 0, errors: [], sources: [] }
 
-  const cacheKey = cacheKeys.jobsList('all', 'marketing_dubai')
+  const cacheKey = cacheKeys.jobsList('all', 'data_dubai')
   const cached = await getCached<{ ts: number }>(cacheKey)
 
   // Don't re-scrape if we scraped in the last 6 hours (unless forced)
@@ -29,12 +31,14 @@ export async function scrapeAllSources(force = false): Promise<ScrapeResult> {
   const supabase = createAdminClient()
 
   // Run all scrapers (some may fail gracefully)
-  const [adzunaJobs, indeedJobs, baytJobs, employerJobs, jsearchJobs] = await Promise.allSettled([
+  const [adzunaJobs, indeedJobs, baytJobs, employerJobs, jsearchJobs, remotiveJobs, wwrJobs] = await Promise.allSettled([
     scrapeAdzuna(),
     scrapeIndeedRSS(),
     scrapesBayt(),
     scrapeEmployerSites(),
     scrapeJSearch(),
+    scrapeRemotive(),
+    scrapeWeWorkRemotely(),
   ])
 
   const allJobs: Omit<Job, 'id' | 'scraped_at'>[] = []
@@ -72,6 +76,20 @@ export async function scrapeAllSources(force = false): Promise<ScrapeResult> {
     if (jsearchJobs.value.length) result.sources.push('jsearch')
   } else {
     result.errors.push(`JSearch: ${jsearchJobs.reason}`)
+  }
+
+  if (remotiveJobs.status === 'fulfilled') {
+    allJobs.push(...remotiveJobs.value)
+    if (remotiveJobs.value.length) result.sources.push('remotive')
+  } else {
+    result.errors.push(`Remotive: ${remotiveJobs.reason}`)
+  }
+
+  if (wwrJobs.status === 'fulfilled') {
+    allJobs.push(...wwrJobs.value)
+    if (wwrJobs.value.length) result.sources.push('weworkremotely')
+  } else {
+    result.errors.push(`WeWorkRemotely: ${wwrJobs.reason}`)
   }
 
   // Deduplicate by external_id+source before inserting
