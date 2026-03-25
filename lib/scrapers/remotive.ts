@@ -75,7 +75,7 @@ export async function scrapeRemotive(): Promise<Omit<Job, 'id' | 'scraped_at'>[]
     for (const job of result.value) {
       const key = String(job.id)
       if (seen.has(key)) continue
-      if (!isDataRole(job.title)) continue
+      // Category already scoped to data/business/finance — skip title filter
       if (isExcluded(`${job.title} ${job.description ?? ''}`)) continue
 
       seen.add(key)

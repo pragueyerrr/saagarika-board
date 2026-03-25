@@ -80,7 +80,8 @@ export async function scrapeWeWorkRemotely(): Promise<Omit<Job, 'id' | 'scraped_
       const company = colonIdx > -1 ? rawTitle.slice(0, colonIdx).trim() : undefined
       const title = colonIdx > -1 ? rawTitle.slice(colonIdx + 1).trim() : rawTitle.trim()
 
-      if (!title || !isDataRole(title)) continue
+      // Feed already scoped to data/finance categories — skip title filter
+      if (!title) continue
 
       const link = typeof item.link === 'string' ? item.link : ''
       const guid = typeof item.guid === 'string' ? item.guid : item.guid?.['#text'] ?? link
